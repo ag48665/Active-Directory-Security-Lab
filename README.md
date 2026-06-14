@@ -176,18 +176,6 @@ index=* EventCode=4732
 | Group Membership Changes | 4732     | Validated |
 
 ---
-
-## Findings
-
-* Failed authentication attempts were successfully identified using Event ID 4625.
-* Successful authentication activity was monitored using Event ID 4624.
-* Privileged logon events were detected through Event ID 4672.
-* New account creation activity was identified using Event ID 4720.
-* Security group membership modifications were tracked through Event ID 4732.
-* Splunk Enterprise provided centralized visibility into Active Directory authentication and account-management activity.
-* Detection logic was mapped to relevant MITRE ATT&CK techniques to demonstrate security coverage.
-
----
 ## Findings
 
 During this lab, multiple Active Directory security events were successfully monitored and analyzed using Splunk Enterprise.
