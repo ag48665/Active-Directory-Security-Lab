@@ -188,6 +188,59 @@ index=* EventCode=4732
 * Detection logic was mapped to relevant MITRE ATT&CK techniques to demonstrate security coverage.
 
 ---
+## Findings
+
+During this lab, multiple Active Directory security events were successfully monitored and analyzed using Splunk Enterprise.
+
+Key findings included:
+
+* Failed authentication attempts were identified through Event ID 4625 monitoring.
+* Successful logon activity was validated using Event ID 4624.
+* Privileged account logons were detected through Event ID 4672.
+* User account creation events were successfully monitored using Event ID 4720.
+* Security group membership modifications were identified through Event ID 4732.
+* Windows Security Event Logs provided detailed visibility into authentication and account-management activity.
+* Splunk SPL searches enabled rapid detection and investigation of Active Directory security events.
+
+---
+
+## Repository Structure
+
+```text
+Active-Directory-Security-Lab
+│
+├── README.md
+│
+├── detections
+│   ├── failed_logons.md
+│   ├── successful_logons.md
+│   ├── privileged_logons.md
+│   ├── user_account_creation.md
+│   └── group_membership_changes.md
+│
+└── screenshots
+    ├── failed_logons.png
+    ├── successful_logons.png
+    ├── privileged_logons.png
+    ├── user_account_creation.png
+    └── group_membership_changes.png
+```
+
+---
+
+## Detection Documentation
+
+Detailed detection write-ups are available in the `detections` directory:
+
+* Failed Logons Detection
+* Successful Logons Detection
+* Privileged Logons Detection
+* User Account Creation Detection
+* Group Membership Changes Detection
+
+```
+```
+
 
 ## Repository Structure
 
