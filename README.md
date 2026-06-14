@@ -1,394 +1,247 @@
-\# Active Directory Security Lab
+# Active Directory Security Lab
 
-
-
-\## Overview
-
-
+## Overview
 
 This project demonstrates Active Directory security monitoring using Splunk Enterprise and Windows Security Event Logs.
 
+The objective of this lab is to monitor authentication activity, detect suspicious account behavior, identify privileged access events, track account management operations, and develop security detections aligned with the MITRE ATT&CK framework.
 
+The lab simulates common SOC analyst monitoring scenarios and demonstrates how Splunk can be used to investigate Active Directory activity through Windows Security Events.
 
-The goal of this lab is to analyze authentication activity, identify suspicious logon behavior, monitor privileged access, detect account creation, and review group membership changes using Splunk SPL searches.
+---
 
-
-
-\---
-
-
-
-\## Environment
-
-
+## Environment
 
 | Component  | Details                |
-
 | ---------- | ---------------------- |
-
 | SIEM       | Splunk Enterprise 10.4 |
-
 | Endpoint   | Windows 11             |
-
 | Log Source | WinEventLog:Security   |
+| Framework  | MITRE ATT&CK           |
 
-| Framework  | MITRE ATT\&CK           |
+---
 
+## Detection Use Cases
 
+This lab includes the following Active Directory monitoring use cases:
 
-\---
+* Failed Logons (Event ID 4625)
+* Successful Logons (Event ID 4624)
+* Privileged Logons (Event ID 4672)
+* User Account Creation (Event ID 4720)
+* Group Membership Changes (Event ID 4732)
 
+---
 
+## Detection Documentation
 
-\## Detection Use Cases
+Detailed detection write-ups are available in the `detections/` directory:
 
+* [Failed Logons](detections/failed_logons.md)
+* [Successful Logons](detections/successful_logons.md)
+* [Privileged Logons](detections/privileged_logons.md)
+* [User Account Creation](detections/user_account_creation.md)
+* [Group Membership Changes](detections/group_membership_changes.md)
 
+---
 
-This lab includes the following Windows Security Event monitoring use cases:
+## Detection 1 – Failed Logons
 
+### Objective
 
+Detect failed authentication attempts that may indicate password guessing, brute-force activity, or unauthorized access attempts.
 
-\* Failed Logons — Event ID 4625
-
-\* Successful Logons — Event ID 4624
-
-\* Privileged Logons — Event ID 4672
-
-\* User Account Creation — Event ID 4720
-
-\* Group Membership Changes — Event ID 4732
-
-
-
-\---
-
-
-
-\## Detection 1 – Failed Logons
-
-
-
-\### Objective
-
-
-
-Detect failed authentication attempts that may indicate password guessing or brute-force activity.
-
-
-
-\### SPL Query
-
-
+### SPL Query
 
 ```spl
-
-index=\* EventCode=4625
-
+index=* EventCode=4625
 ```
 
-
-
-\### MITRE ATT\&CK
-
-
+### MITRE ATT&CK
 
 | Technique ID | Technique   |
-
 | ------------ | ----------- |
-
 | T1110        | Brute Force |
 
+### Evidence
 
+![Failed Logons](screenshots/failed_logons.png)
 
-\### Evidence
+---
 
+## Detection 2 – Successful Logons
 
+### Objective
 
-!\[Failed Logons](screenshots/failed\_logons.png)
+Monitor successful authentication events and identify valid account usage across the environment.
 
-
-
-\---
-
-
-
-\## Detection 2 – Successful Logons
-
-
-
-\### Objective
-
-
-
-Monitor successful authentication events and identify valid account usage.
-
-
-
-\### SPL Query
-
-
+### SPL Query
 
 ```spl
-
-index=\* EventCode=4624
-
+index=* EventCode=4624
 ```
 
-
-
-\### MITRE ATT\&CK
-
-
+### MITRE ATT&CK
 
 | Technique ID | Technique      |
-
 | ------------ | -------------- |
-
 | T1078        | Valid Accounts |
 
+### Evidence
 
+![Successful Logons](screenshots/successful_logons.png)
 
-\### Evidence
+---
 
+## Detection 3 – Privileged Logons
 
+### Objective
 
-!\[Successful Logons](screenshots/successful\_logons.png)
+Detect logon sessions that receive elevated privileges and administrative rights.
 
-
-
-\---
-
-
-
-\## Detection 3 – Privileged Logons
-
-
-
-\### Objective
-
-
-
-Detect logons that receive elevated privileges.
-
-
-
-\### SPL Query
-
-
+### SPL Query
 
 ```spl
-
-index=\* EventCode=4672
-
+index=* EventCode=4672
 ```
 
-
-
-\### MITRE ATT\&CK
-
-
+### MITRE ATT&CK
 
 | Technique ID | Technique      |
-
 | ------------ | -------------- |
-
 | T1078        | Valid Accounts |
 
+### Evidence
 
+![Privileged Logons](screenshots/privileged_logons.png)
 
-\### Evidence
+---
 
+## Detection 4 – User Account Creation
 
+### Objective
 
-!\[Privileged Logons](screenshots/privileged\_logons.png)
+Detect creation of new user accounts that may indicate unauthorized account provisioning or persistence mechanisms.
 
-
-
-\---
-
-
-
-\## Detection 4 – User Account Creation
-
-
-
-\### Objective
-
-
-
-Detect creation of new user accounts that may indicate unauthorized account creation or persistence.
-
-
-
-\### SPL Query
-
-
+### SPL Query
 
 ```spl
-
-index=\* EventCode=4720
-
+index=* EventCode=4720
 ```
 
-
-
-\### MITRE ATT\&CK
-
-
+### MITRE ATT&CK
 
 | Technique ID | Technique      |
-
 | ------------ | -------------- |
-
 | T1136        | Create Account |
 
+### Evidence
 
+![User Account Creation](screenshots/user_account_creation.png)
 
-\### Evidence
+---
 
+## Detection 5 – Group Membership Changes
 
+### Objective
 
-!\[User Account Creation](screenshots/user\_account\_creation.png)
+Detect modifications to security group membership that may indicate privilege escalation or account manipulation.
 
-
-
-\---
-
-
-
-\## Detection 5 – Group Membership Changes
-
-
-
-\### Objective
-
-
-
-Detect changes to security group membership that may indicate privilege escalation or account manipulation.
-
-
-
-\### SPL Query
-
-
+### SPL Query
 
 ```spl
-
-index=\* EventCode=4732
-
+index=* EventCode=4732
 ```
 
-
-
-\### MITRE ATT\&CK
-
-
+### MITRE ATT&CK
 
 | Technique ID | Technique            |
-
 | ------------ | -------------------- |
-
 | T1098        | Account Manipulation |
 
+### Evidence
 
+![Group Membership Changes](screenshots/group_membership_changes.png)
 
-\### Evidence
+---
 
+## Detection Summary
 
+| Detection                | Event ID | Status    |
+| ------------------------ | -------- | --------- |
+| Failed Logons            | 4625     | Validated |
+| Successful Logons        | 4624     | Validated |
+| Privileged Logons        | 4672     | Validated |
+| User Account Creation    | 4720     | Validated |
+| Group Membership Changes | 4732     | Validated |
 
-!\[Group Membership Changes](screenshots/group\_membership\_changes.png)
+---
 
+## Findings
 
+* Failed authentication attempts were successfully identified using Event ID 4625.
+* Successful authentication activity was monitored using Event ID 4624.
+* Privileged logon events were detected through Event ID 4672.
+* New account creation activity was identified using Event ID 4720.
+* Security group membership modifications were tracked through Event ID 4732.
+* Splunk Enterprise provided centralized visibility into Active Directory authentication and account-management activity.
+* Detection logic was mapped to relevant MITRE ATT&CK techniques to demonstrate security coverage.
 
-\---
+---
 
+## Repository Structure
 
+```text
+Active-Directory-Security-Lab
+│
+├── README.md
+│
+├── detections
+│   ├── failed_logons.md
+│   ├── successful_logons.md
+│   ├── privileged_logons.md
+│   ├── user_account_creation.md
+│   └── group_membership_changes.md
+│
+└── screenshots
+    ├── failed_logons.png
+    ├── successful_logons.png
+    ├── privileged_logons.png
+    ├── user_account_creation.png
+    └── group_membership_changes.png
+```
 
-\## Detection Summary
+---
 
+## Skills Demonstrated
 
+* Active Directory Security Monitoring
+* Windows Security Event Log Analysis
+* Splunk SPL Development
+* Detection Engineering
+* Authentication Monitoring
+* Privileged Access Monitoring
+* User and Group Management Monitoring
+* MITRE ATT&CK Mapping
+* Security Operations Center (SOC) Workflow
+* Blue Team Analysis
 
-| Detection                | Windows Event ID | Status    |
+---
 
-| ------------------------ | ---------------- | --------- |
+## Key Takeaways
 
-| Failed Logons            | 4625             | Validated |
+* Windows Security Event Logs provide critical visibility into authentication and account-management activity.
+* Splunk enables efficient monitoring and investigation of Active Directory events.
+* Detection engineering helps transform raw event data into actionable security monitoring use cases.
+* MITRE ATT&CK mapping improves detection coverage tracking and documentation.
+* Active Directory monitoring remains a core capability for SOC analysts and blue teams.
 
-| Successful Logons        | 4624             | Validated |
+---
 
-| Privileged Logons        | 4672             | Validated |
+## Author
 
-| User Account Creation    | 4720             | Validated |
-
-| Group Membership Changes | 4732             | Validated |
-
-
-
-\---
-
-
-
-\## Skills Demonstrated
-
-
-
-\* Active Directory Security Monitoring
-
-\* Windows Security Event Log Analysis
-
-\* Splunk SPL Development
-
-\* Authentication Monitoring
-
-\* Privileged Access Monitoring
-
-\* Account Change Detection
-
-\* MITRE ATT\&CK Mapping
-
-\* SOC Analyst Workflow
-
-\* Detection Engineering
-
-\* Blue Team Analysis
-
-
-
-\---
-
-
-
-\## Key Takeaways
-
-
-
-\* Windows Security Event Logs provide valuable visibility into authentication and account activity.
-
-\* Splunk enables effective monitoring of failed logons, successful logons, privileged access, and account changes.
-
-\* Mapping detections to MITRE ATT\&CK helps document security coverage.
-
-\* Active Directory security monitoring is a core SOC analyst skill.
-
-
-
-\---
-
-
-
-\## Author
-
-
-
-\*\*Agata Gabara\*\*
-
-
+**Agata Gabara**
 
 Cybersecurity Analyst | SOC Analyst | Threat Hunter
 
-
-
 GitHub: https://github.com/ag48665
-
-
-
